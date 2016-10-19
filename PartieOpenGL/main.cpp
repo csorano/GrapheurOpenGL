@@ -17,17 +17,19 @@ struct point
 	float x, y;
 };
 
-point tab[20];
+point tab[2000];
 
 //Testing method
 void fillpointTab()
 {
+	float pas = 0.0;
 	point tmp = { 0.0, 0.0 };
-	for (int i = 0; i < 20; ++i)
+	for (int i = 0; i < 2000; ++i)
 	{
-		tmp.x = i - 10;
-		tmp.y = sin((long double)i);
+		tmp.x = pas - 50.0;
+		tmp.y = sin((double)pas - 50.0);	
 		tab[i] = tmp;
+		pas = pas + 0.05;
 	}
 }
 
@@ -38,7 +40,7 @@ float inter_abscisse(float x, float x1, float x2){
 
 //permet de placer un point dans l'intervalle [-1;0.65] en fonction de l'intervalle donnée par l'utilisateur
 float inter_ordonnee(float y, float y1, float y2){
-	return(((1.65 / (y2 - y1))*(y - ((y2 + y1) / 2))) - 0.175);
+	return(2 / (y2 - y1))*(y - ((y2 + y1) / 2));
 }
 
 //Testing method
@@ -75,14 +77,18 @@ void myKey(int c)
 
 void drawCurve()
 {
+	int val1 = 0;
+	int val2 = 0;
 	int tabLength = sizeof(tab) / sizeof(point);
 	point tmp1 = { 0.0, 0.0 };
 	point tmp2 = { 0.0, 0.0 };
 	for (int i = 0; i<tabLength - 1; ++i)
 	{
-		tmp1 = tab[i];
-		tmp2 = tab[i + 1],
-			line(tmp1.x, tmp1.y, tmp2.x, tmp2.y);
+		val1 = i;
+		val2 = i + 1;
+		tmp1 = tab[val1];
+		tmp2 = tab[val2];
+		line(tmp1.x, tmp1.y, tmp2.x, tmp2.y);
 	}
 }
 

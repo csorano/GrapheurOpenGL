@@ -160,7 +160,6 @@ void line(const float x0,const float y0,const float x1,const float y1)
   glBegin(GL_LINES);
     glVertex2f(x0,y0);
     glVertex2f(x1,y1);
-
   glEnd();
 }
 
