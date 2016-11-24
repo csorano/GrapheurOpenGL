@@ -15,11 +15,10 @@ static int Width,Height;
 static void (*AppliDraw)(void);
 static void (*AppliKey)(int);
 
-
 /**
 * GlutReshape
 *
-* Cette procédure permet de gerer la taille de la fenetre quand (redimensionnée)
+* Cette procédure permet de gérer la taille de la fenêtre quand elle est redimensionnée
 *
 * @parma w largeur de la fenetre gl
 * @parma h hauteur de la fenetre gl
@@ -64,7 +63,7 @@ static void Begin2DDisplay(void)
 
 static void End2DDisplay(void)
 {
-  /* Fin du trace, retour au parametres normaux */
+  /* Fin du tracé, retour aux paramètres normaux */
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();
   glMatrixMode(GL_MODELVIEW);
@@ -91,18 +90,18 @@ static void GlutDraw(void)
 /**
 * InitGraph
 *
-* Procedure d'initialisation de la fenetre et de l'environement OpenGL 
-* L'initialisation de GLUT se trouve dans la procedure
-* principale, elle necessite l'emploie des argument de
+* Procédure d'initialisation de la fenêtre et de l'environnement OpenGL 
+* L'initialisation de GLUT se trouve dans la procèdure
+* principale, elle nécessite l'emploi des arguments de
 * la ligne de commande 
 *
 * @parma ac
 * @parma av[]
-* @parma WinName definit le nom (titre) de la fentre d'affichage
-* @parma w definit la largeur de la fenetre
-* @parma h definit la hauteur de la fenetre
+* @parma WinName définit le nom (titre) de la fenêtre d'affichage
+* @parma w définit la largeur de la fenêtre
+* @parma h définit la hauteur de la fenêtre
 * @parma Draw définit une méthode de traçage 
-* @parma Key définit une méthode permettant la détection des touche du clavier 
+* @parma Key définit une méthode permettant la détection des touches du clavier 
 * @parma c entier designant le code ascii d'une touche
 *
 */
@@ -117,8 +116,8 @@ void InitGraph(int ac,char *av[],
   glutInitWindowPosition(0,0);
   glutInitWindowSize(Width,Height);
   WindowNumber=glutCreateWindow(WinName);
-  glutReshapeFunc(GlutReshape); /* fonction appelee qd fenetre redimensionnee */
-  glutIdleFunc(GlutIdle); /* fonction appelee en boucle */
+  glutReshapeFunc(GlutReshape); /* fonction appelée qd fenêtre redimensionnée */
+  glutIdleFunc(GlutIdle); /* fonction appelée en boucle */
   AppliKey=Key;
   glutKeyboardFunc(GlutKey);
   AppliDraw=Draw;
@@ -132,7 +131,7 @@ void InitGraph(int ac,char *av[],
 /**
 * setcolor
 *
-* Cette procédure permet de definire une couleur par ces trois composantes   
+* Cette procédure permet de définir une couleur par ses trois composantes   
 *
 * @parma r composante du plan rouge
 * @parma v composante du plan vert
@@ -147,7 +146,7 @@ void setcolor(const float r,const float v,const float b)
 /**
 * line
 *
-* Cette procédure permet de tracher une ligne entre deux points (x0, y0) et (x1,y1) 
+* Cette procédure permet de tracer une ligne entre deux points (x0, y0) et (x1,y1) 
 *
 * @parma x0 abscisse 1er point
 * @parma y0 ordonnée 1er point
@@ -155,7 +154,7 @@ void setcolor(const float r,const float v,const float b)
 * @parma y0 ordonnée 2eme point
 *
 */
-void line(const float x0,const float y0,const float x1,const float y1)
+void line(const float x0,const float y0,const float x1,const float y1)//rajouter épaisseur
 {
   glBegin(GL_LINES);
     glVertex2f(x0,y0);
@@ -166,10 +165,11 @@ void line(const float x0,const float y0,const float x1,const float y1)
 /**
 * beginlines
 *
-* Cette procédure permet 
+* Cette procédure permet de commencer le tracé d'une ligne brisée composée
+* de n segments de droite définis par (n+1) points.
 *
-* @parma x0
-* @parma y0
+* @param x0 l'abscisse du premier point de la ligne brisée
+* @param y0 l'ordonnée du premier point de la ligne brisée
 *
 */
 void beginlines(const float x0,const float y0)
@@ -188,13 +188,15 @@ void finishlines(void)
   glEnd();
 }
 
-void drawGrid()
+void drawGrid(double pasChoisi)
 {
 	//Draw Grid 
-	float xtmp;
-	glLineWidth (0.5);
-	setcolor(0.25F,0.25F,0.5F);
-	for (xtmp = -1.0; xtmp <= 1.0; xtmp += 0.1)
+	double xtmp;
+	//Définit l'épaisseur des lignes de la fenêtre
+	glLineWidth (2);
+	//Définit la couleur de la grille en arrière-plan
+	setcolor(0.1F,0.1F,0.1F);
+	for (xtmp = -1.0; xtmp <= 1.0; xtmp += pasChoisi)
 	{
 		line(xtmp,-1.0,xtmp,1.0); //Vertical
 		line(-1.0,xtmp,1.0,xtmp); //Horizontal
@@ -215,11 +217,11 @@ void bar(const float x0,const float y0,const float x1,const float y1)
 /**
 * outtextxy
 *
-* Cette procédure permet d'ecrit une chaine de charactère s dans une zone de texte définie par les coordonnées x et y
+* Cette procédure permet d'écrire une chaîne de caractères dans une zone de texte définie par les coordonnées x et y
 *
-* @parma x abscisse du point (coint gauche superieur) de la zone de texte 
-* @parma y ordonnée du point (coint gauche superieur) de la zone de texte 
-* @parma s tableau de charctères 
+* @parma x abscisse du point (coint supérieur gauche) de la zone de texte 
+* @parma y ordonnée du point (coint supérieur gauche) de la zone de texte 
+* @parma s tableau de caractères 
 *
 */
 void outtextxy(const float x,const float y,const char *str)

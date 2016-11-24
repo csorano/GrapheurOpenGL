@@ -8,8 +8,15 @@
 #include <math.h>
 
 int bascule = 0;
+//Bornes xMin et xMax définies par l'utilisateur (par défaut à 0 et 1)
 int xMin = 0;
 int xMax = 1;
+
+//Le pas doit nous permettre de calculer et d'afficher le bon nombre de graduations sur l'axe des abscisses
+double pasCalcule = 0.1;
+
+//Plus precision se rapproche de 0, plus le tracé est précis
+float precision = 0.05;
 
 //Testing structure
 struct point
@@ -20,16 +27,18 @@ struct point
 point tab[2000];
 
 //Testing method
-void fillpointTab()
+void fillPointTab()
 {
-	float pas = 0.0;
+	//Pourquoi ce truc est égal à 0 ? Teste avec 45 puis 46 et 47 ;-)
+	float trucQuiDeplaceLaCourbeSurLAxeDesAbscisses = 0.0;
 	point tmp = { 0.0, 0.0 };
 	for (int i = 0; i < 2000; ++i)
 	{
-		tmp.x = pas - 50.0;
-		tmp.y = sin((double)pas - 50.0);	
+		//Pourquoi avions-nous mis 50 ?
+		tmp.x = trucQuiDeplaceLaCourbeSurLAxeDesAbscisses - 50.0;
+		tmp.y = sin((double)tmp.x);
 		tab[i] = tmp;
-		pas = pas + 0.05;
+		trucQuiDeplaceLaCourbeSurLAxeDesAbscisses = trucQuiDeplaceLaCourbeSurLAxeDesAbscisses + precision;
 	}
 }
 
@@ -43,7 +52,7 @@ float inter_ordonnee(float y, float y1, float y2){
 	return(2 / (y2 - y1))*(y - ((y2 + y1) / 2));
 }
 
-//Testing method
+//permet de convertir le tableau de points créé par fillPointTab() en tableau de points situés dans le bon intervalle défini par xMin et xMax
 void convertTab(){
 	int tabLength = sizeof(tab) / sizeof(point);
 	point tmp = { 0.0, 0.0 };
@@ -62,7 +71,7 @@ void convertTab(){
 *
 * Gestion des touches du clavier
 *
-* @parma c code ascci definissant une touche du clavier
+* @parma c code ascci définissant une touche du clavier
 *
 */
 void myKey(int c)
@@ -82,6 +91,7 @@ void drawCurve()
 	int tabLength = sizeof(tab) / sizeof(point);
 	point tmp1 = { 0.0, 0.0 };
 	point tmp2 = { 0.0, 0.0 };
+	setcolor(0.7F,0.8F,1.0F);
 	for (int i = 0; i<tabLength - 1; ++i)
 	{
 		val1 = i;
@@ -100,22 +110,20 @@ void drawCurve()
 */
 void myDraw(void)
 {
-	drawGrid();
-	/* trace une ligne blanche diagonale */
-	setcolor(1.0F, 1.0F, 1.0F);
+	drawGrid(pasCalcule);
+	setcolor(0.3F,0.3F,0.3F);
 	line(0, -1, 0, 1); //Abscisse
-	line(-1, 0, 1, 0); //Ordonnee
+	line(-1, 0, 1, 0); //Ordonnée
 	drawCurve();
 	if (bascule)
 	{
-		/* Trace un rectangle rouge a l'ecran si active
+		/* Trace un rectangle rouge à l'ecran si active
 		* par appui de la touche 'a' */
 		//setcolor(1.0F,0.0F,0.0F);
 		//bar(-0.5F,-0.5F,0.5F,0.5F);  
 	}
-	/* ecrit le message "bonjour" en jaune */
-	//setcolor(1.0F,1.0F,0.0F);
-	//outtextxy(0.0,0.0,"Bonjour");  
+	setcolor(0.7F,0.8F,1.0F);
+	outtextxy((-(abs(xMin)*pasCalcule)+pasCalcule),pasCalcule,"Fonction sinus");  
 }
 
 
@@ -126,22 +134,22 @@ void myDraw(void)
 *
 * Dans  cet  exemple  les  fonctions  (dites  callback)  myDraw  et  myKey  sont  installées  ici  par
 * l'appel  InitGraph  en  tant  que fonctions  réagissantes  aux  évènements  de  "re-dessinage"  (pour  myDraw)
-* et  aux  évènements  d'appui  sur  une  touche  du
-* clavier (myKey).
-
-* @parma ac : nombre de parametres
-* @parma av : tableau contenant les parametres
+* et  aux  évènements  d'appui  sur  une  touche  du clavier (myKey).
+*
+* @parma ac : nombre de paramètres
+* @parma av : tableau contenant les paramètres
 *
 */
 int main(int ac, char *av[])
 {
-	/*printf("Entrez la borne minimale : ");
+	printf("Entrez la borne minimale : ");
 	scanf("%d", &xMin);
 	printf("Entrez la borne minimale : ");
-	scanf("%d", &xMax);*/
-	xMin = -10;
-	xMax = 10;
-	fillpointTab();
+	scanf("%d", &xMax);
+
+	pasCalcule = ((2.0)/(abs(xMax-xMin)));
+
+	fillPointTab();
 	convertTab();
 	InitGraph(ac, av, "Essai Glut", 800, 700, xMin, xMax, myDraw, myKey);
 	return 0;

@@ -1,14 +1,14 @@
 /**
 * @file Graph.h
 *
-* @brief presente quelques outils d'affichage nécessaires dans le cadre de ce
+* @brief présente quelques outils d'affichage nécessaires dans le cadre de ce
 * projet.
-* Il contient la declaration des procedures disponibles pour ouvrir une fenetre
-* et y dessiner des figures. Les coordonnees des points dans la fenetre sont
-* definies sur l'intervalle [-1;1], (-1,-1) etant le coin inferieur gauche de
+* Il contient la déclaration des procédures disponibles pour ouvrir une fenêtre
+* et y dessiner des figures. Les coordonnées des points dans la fenêtre sont
+* définies sur l'intervalle [-1;1], (-1,-1) etant le coin inferieur gauche de
 * la fenetre et (1,1) le coin superieur droit.
 * 
-* Pour une demonstration de l'utilisation de ces procedures, voir le fichier
+* Pour une démonstration de l'utilisation de ces procédures, voir le fichier
 * main.cpp.
 *
 */
@@ -16,16 +16,16 @@
 /**
 * InitGraph
 *
-* Procedure d'initialisation de la fenetre et de l'environnement OpenGL 
+* Procédure d'initialisation de la fenêtre et de l'environnement OpenGL 
 *
-* @param ac nombre de parametres
-* @param av tableau contenant les parametres 
-* @param WinName le nom (titre) de la fenetre d'affichage
-* @param w la largeur de la fenetre
-* @param h la hauteur de la fenetre
-* @param Draw fonction qui affiche le graphique dans la fenetre
+* @param ac nombre de paramètres
+* @param av tableau contenant les paramètres 
+* @param WinName le nom (titre) de la fenêtre d'affichage
+* @param w la largeur de la fenêtre
+* @param h la hauteur de la fenêtre
+* @param Draw fonction qui affiche le graphique dans la fenêtre
 * @param Key fonction appelée lors de l'appui sur une touche c du clavier,
-*	 c designant le code ascii de la touche
+*	 c désignant le code ascii de la touche
 *
 */
 void InitGraph(int ac,char *av[], const char *WinName,
@@ -34,7 +34,7 @@ void InitGraph(int ac,char *av[], const char *WinName,
 /**
 * line
 *
-* Cette procedure permet de tracer une ligne entre deux points (x0, y0) et
+* Cette procédure permet de tracer une ligne entre deux points (x0, y0) et
 * (x1,y1) 
 *
 * @param x0 abscisse du 1er point
@@ -49,8 +49,8 @@ void line(const float x0, const float y0, const float x1, const float y1);
 /**
 * setcolor
 *
-* Cette procedure permet de definir la couleur utilisée pour tracer les lignes.
-* La couleur par les valeurs des composantes rouge, vert et bleue.
+* Cette procédure permet de définir la couleur utilisée pour tracer les lignes.
+* La couleur est définie par les valeurs des composantes rouge, vert et bleue.
 *
 * @param r composante rouge
 * @param v composante verte
@@ -62,11 +62,11 @@ void setcolor(const float r, const float v, const float b);
 /**
 * beginlines
 *
-* Cette procedure permet de commencer le trace d'une ligne brisee composee
+* Cette procédure permet de commencer le tracé d'une ligne brisée composée
 * de n segments de droite définis par (n+1) points.
 *
-* @param x0 l'abscisse du premier point de la ligne brisee
-* @param y0 l'ordonnée du premier point de la ligne brisee
+* @param x0 l'abscisse du premier point de la ligne brisée
+* @param y0 l'ordonnée du premier point de la ligne brisée
 *
 */
 void beginlines(const float x0, const float y0);
@@ -74,12 +74,12 @@ void beginlines(const float x0, const float y0);
 /**
 * lineto
 *
-* Cette procedure permet de d'ajouter un point a la ligne brisee en cours. Le
-* dernier point defini et le nouveau point delimitent un nouveau segment de
-* droite dans la ligne brisee.
+* Cette procédure permet d'ajouter un point à la ligne brisée en cours. Le
+* dernier point défini et le nouveau point délimitent un nouveau segment de
+* droite dans la ligne brisée.
 *
-* @param x l'abscisse du nouveau point de la ligne brisee
-* @param y l'ordonnee du nouveau point de la ligne brisee
+* @param x l'abscisse du nouveau point de la ligne brisée
+* @param y l'ordonnee du nouveau point de la ligne brisée
 *
 */
 void lineto(const float x, const float y);
@@ -87,23 +87,23 @@ void lineto(const float x, const float y);
 /**
 * finishlines
 *
-* Cette procedure permet de terminer le trace de la ligne brisee en cours.
+* Cette procédure permet de terminer le tracé de la ligne brisée en cours.
 *
 */
 void finishlines(void);
 
-void drawGrid();
+void drawGrid(double pasChoisi);
 
 /**
 * bar
 *
-* Cette procédure permet de tracer un rectangle defini par son coin superieur
-* gauche et son coin inferieur droit.
+* Cette procédure permet de tracer un rectangle défini par son coin supérieur
+* gauche et son coin inférieur droit.
 *
-* @param x0 abscisse du coin superieur gauche du rectangle
-* @param y0 ordonnee du coin superieur gauche du rectangle
-* @param x1 abscisse du coin inferieur droit du rectangle
-* @param y1 ordonnee du coin inferieur droit du rectangle
+* @param x0 abscisse du coin supérieur gauche du rectangle
+* @param y0 ordonnee du coin supérieur gauche du rectangle
+* @param x1 abscisse du coin inférieur droit du rectangle
+* @param y1 ordonnee du coin inférieur droit du rectangle
 *
 */
 void bar(const float x0, const float y0, const float x1, const float y1);
@@ -111,12 +111,12 @@ void bar(const float x0, const float y0, const float x1, const float y1);
 /**
 * outtextxy
 *
-* Cette procedure permet d'ecrire une chaine de characteres s dans une zone de
-* texte definie par les coordonnees x et y
+* Cette procédure permet d'écrire une chaîne de caractères dans une zone de
+* texte définie par les coordonnées x et y
 *
-* @param x abscisse de l'origine (coin gauche superieur) de la zone de texte
-* @param y ordonnee de l'origine (coin gauche superieur) de la zone de texte
-* @param s chaine de caracteres contenant le texte a afficher
+* @param x abscisse de l'origine (coin supérieur gauche) de la zone de texte
+* @param y ordonnee de l'origine (coin supérieur gauche) de la zone de texte
+* @param s chaîne de caractères contenant le texte à afficher
 *
 */
 void outtextxy(const float x, const float y, const char *s);
