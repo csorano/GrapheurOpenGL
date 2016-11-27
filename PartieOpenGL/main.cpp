@@ -154,7 +154,13 @@ bool checkInput(char* input, int* borne)
 	length = strlen(input);
 	for (i = 0; i < length; i++)
 	{
-		if (!isdigit(input[i])&& input[i] != '-')
+		if (i != 0 && input[i] == '-')
+		{
+			printf("Veuillez saisir une valeur numerique.\n");
+			resetBornes();
+			return false;
+		}
+		if (!isdigit(input[i]) && input[i] != '-')
 		{
 			printf("Veuillez saisir une valeur numerique.\n");
 			resetBornes();
