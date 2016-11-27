@@ -12,15 +12,16 @@
 #define MAXINPUT 100
 
 int bascule = 0;
-//Bornes xMin et xMax définies par l'utilisateur (par défaut à 0 et 1)
-int xMin = 0;
-int xMax = 1;
-//Bornes yMin et yMax définies par l'utilisateur (par défaut à -1 et 1)
-int yMin = -1;
-int yMax = 1;
+//Bornes xMin et xMax définies par l'utilisateur (par défaut à -10 et 10)
+int xMin = -10;
+int xMax = 10;
+//Bornes yMin et yMax définies par l'utilisateur (par défaut à -10 et 10)
+int yMin = -10;
+int yMax = 10;
 
 //Le pas doit nous permettre de calculer et d'afficher le bon nombre de graduations sur l'axe des abscisses
-double pasCalcule = 0.1;
+double pasCalculeX = 0.1;
+double pasCalculeY = 0.1;
 
 //Plus precision se rapproche de 0, plus le tracé est précis
 float precision = 0.05;
@@ -117,10 +118,11 @@ void drawCurve()
 */
 void myDraw(void)
 {
-	drawGrid(pasCalcule);
+	char tmp[MAXINPUT] = "";
+	drawGrid(pasCalculeX, pasCalculeY);
 	setcolor(0.3F,0.3F,0.3F);
-	//line(0, -1, 0, 1); //Abscisse
-	//line(-1, 0, 1, 0); //Ordonnée
+	line(inter_abscisse(0,xMin,xMax), inter_ordonnee(yMin, yMin, yMax), inter_abscisse(0, xMin, xMax), inter_ordonnee(yMax, yMin, yMax)); //Abscisse
+	line(inter_abscisse(xMin, xMin, xMax), inter_ordonnee(0, yMin, yMax), inter_abscisse(xMax, xMin, xMax), inter_ordonnee(0, yMin, yMax)); //Ordonnée
 	drawCurve();
 	if (bascule)
 	{
@@ -129,17 +131,29 @@ void myDraw(void)
 		//setcolor(1.0F,0.0F,0.0F);
 		//bar(-0.5F,-0.5F,0.5F,0.5F);  
 	}
-	setcolor(0.7F,0.8F,1.0F);
-	outtextxy((-(abs(xMin)*pasCalcule)+pasCalcule),pasCalcule,"Fonction sinus");  
+	// Affichage des bornes à l'écran
+	setcolor(0.0F,1.0F,0.0F);
+
+	sprintf(tmp, "xMin: %d", xMin);
+	outtextxy(-0.95,0.90,tmp); 
+
+	sprintf(tmp, "xMax: %d", xMax);
+	outtextxy(-0.95, 0.82, tmp);
+
+	sprintf(tmp, "yMin: %d", yMin);
+	outtextxy(-0.95, 0.74, tmp);
+
+	sprintf(tmp, "yMax: %d", yMax);
+	outtextxy(-0.95, 0.66, tmp);
 }
 
 // Restaure la valeur par défaut des bornes si l'utilisateur rentre des valeurs incorrectes.
 void resetBornes(void)
 {
-	xMin = 0;
-	xMax = 1;
-	yMin = -1;
-	yMax = 1;
+	xMin = -10;
+	xMax = 10;
+	yMin = -10;
+	yMax = 10;
 }
 
 /**
@@ -233,7 +247,8 @@ int main(int ac, char *av[])
 		scanOK = scanBornes();
 	}
 
-	pasCalcule = ((2.0)/(abs(xMax-xMin)));
+	pasCalculeX = ((2.0)/(abs(xMax-xMin)));
+	pasCalculeY = ((2.0) / (abs(yMax - yMin)));
 
 	fillPointTab();
 	convertTab();

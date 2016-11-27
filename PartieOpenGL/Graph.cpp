@@ -188,18 +188,22 @@ void finishlines(void)
   glEnd();
 }
 
-void drawGrid(double pasChoisi)
+void drawGrid(double pasX, double pasY)
 {
 	//Draw Grid 
 	double xtmp;
+	double ytmp;
 	//Définit l'épaisseur des lignes de la fenêtre
 	glLineWidth (2);
 	//Définit la couleur de la grille en arrière-plan
 	setcolor(0.1F,0.1F,0.1F);
-	for (xtmp = -1.0; xtmp <= 1.0; xtmp += pasChoisi)
+	for (xtmp = -1.0; xtmp <= 1.0; xtmp += pasX)
 	{
-		line(xtmp,-1.0,xtmp,1.0); //Vertical
-		line(-1.0,xtmp,1.0,xtmp); //Horizontal
+		for(ytmp = -1.0; ytmp <= 1.0; ytmp += pasY)
+		{
+			line(xtmp, -1.0, xtmp, 1.0); //Vertical
+			line(-1.0, ytmp, 1.0, ytmp); //Horizontal
+		}
 	};
 }
 

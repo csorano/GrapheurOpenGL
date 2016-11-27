@@ -92,7 +92,7 @@ void lineto(const float x, const float y);
 */
 void finishlines(void);
 
-void drawGrid(double pasChoisi);
+void drawGrid(double pasX, double pasY);
 
 /**
 * bar
