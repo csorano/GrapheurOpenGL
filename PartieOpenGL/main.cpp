@@ -130,7 +130,7 @@ void myDraw(void)
 		//bar(-0.5F,-0.5F,0.5F,0.5F);  
 	}
 	setcolor(0.7F,0.8F,1.0F);
-	//outtextxy((-(abs(xMin)*pasCalcule)+pasCalcule),pasCalcule,"Fonction sinus");  
+	outtextxy((-(abs(xMin)*pasCalcule)+pasCalcule),pasCalcule,"Fonction sinus");  
 }
 
 // Restaure la valeur par défaut des bornes si l'utilisateur rentre des valeurs incorrectes.
@@ -171,39 +171,44 @@ bool checkInput(char* input, int* borne)
 	return true;
 }
 
-// Fonction permettant le scan des valeurs des bornes et la gestion des erreurs éventuelles.
-void scanBornes(void)
+/**
+* Fonction permettant le scan des valeurs des bornes et la gestion des erreurs éventuelles.
+*
+* @return bool
+*/
+bool scanBornes(void)
 {
 	char tmp[MAXINPUT] = "";
 
 	printf("Entrez la borne X minimale : ");
 	scanf("%s", &tmp);
-	if (!checkInput(tmp, &xMin)) scanBornes();
+	if (!checkInput(tmp, &xMin)) return false;
 
 	printf("Entrez la borne X maximale : ");
 	scanf("%s", &tmp);
-	if (!checkInput(tmp, &xMax)) scanBornes();
+	if (!checkInput(tmp, &xMax)) return false;
 
 	printf("Entrez la borne Y minimale : ");
 	scanf("%s", &tmp);
-	if (!checkInput(tmp, &yMin)) scanBornes();
+	if (!checkInput(tmp, &yMin)) return false;
 
 	printf("Entrez la borne Y maximale : ");
 	scanf("%s", &tmp);
-	if (!checkInput(tmp, &yMax)) scanBornes();
+	if (!checkInput(tmp, &yMax)) return false;
 
 	if (xMin > xMax || yMin > yMax)
 	{
 		printf("Bornes incorrectes. Les bornes minimum doivent etre strictement superieures aux bornes maximum.\n");
 		resetBornes();
-		scanBornes();
+		return false;
 	}
 	else if (xMax == xMin || yMax == yMin)
 	{
 		printf("Bornes incorrectes. Les bornes minimum et maximum ne peuvent etre egales.\n");
 		resetBornes();
-		scanBornes();
+		return false;
 	}
+	return true;
 }
 
 /**
@@ -222,7 +227,11 @@ void scanBornes(void)
 int main(int ac, char *av[])
 {
 	// J'ai sorti le scan du main !
-	scanBornes();
+	bool scanOK = false;
+	while (!scanOK)
+	{
+		scanOK = scanBornes();
+	}
 
 	pasCalcule = ((2.0)/(abs(xMax-xMin)));
 
