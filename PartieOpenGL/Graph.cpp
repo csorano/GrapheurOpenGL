@@ -53,7 +53,7 @@ static void Begin2DDisplay(void)
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   glLoadIdentity();
-  glOrtho(-1,1,-1.0,1.0,0.5,1.5);
+  glOrtho(-1.0,1.0,-1.0,1.0,0.5,1.5);
 
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix();

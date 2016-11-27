@@ -4,13 +4,20 @@
 **************************/
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "graph.h"
 #include <math.h>
+#include <ctype.h>
+
+#define MAXINPUT 100
 
 int bascule = 0;
 //Bornes xMin et xMax définies par l'utilisateur (par défaut à 0 et 1)
 int xMin = 0;
 int xMax = 1;
+//Bornes yMin et yMax définies par l'utilisateur (par défaut à -1 et 1)
+int yMin = -1;
+int yMax = 1;
 
 //Le pas doit nous permettre de calculer et d'afficher le bon nombre de graduations sur l'axe des abscisses
 double pasCalcule = 0.1;
@@ -47,7 +54,7 @@ float inter_abscisse(float x, float x1, float x2){
 	return(2 / (x2 - x1))*(x - ((x2 + x1) / 2));
 }
 
-//permet de placer un point dans l'intervalle [-1;0.65] en fonction de l'intervalle donnée par l'utilisateur
+//permet de placer un point dans l'intervalle [-1;1] en fonction de l'intervalle donnée par l'utilisateur
 float inter_ordonnee(float y, float y1, float y2){
 	return(2 / (y2 - y1))*(y - ((y2 + y1) / 2));
 }
@@ -61,7 +68,7 @@ void convertTab(){
 	{
 		tmp = tab[i];
 		res.x = inter_abscisse(tmp.x, xMin, xMax);
-		res.y = inter_ordonnee(tmp.y, xMin, xMax);
+		res.y = inter_ordonnee(tmp.y, yMin, yMax);
 		tab[i] = res;
 	}
 }
@@ -112,8 +119,8 @@ void myDraw(void)
 {
 	drawGrid(pasCalcule);
 	setcolor(0.3F,0.3F,0.3F);
-	line(0, -1, 0, 1); //Abscisse
-	line(-1, 0, 1, 0); //Ordonnée
+	//line(0, -1, 0, 1); //Abscisse
+	//line(-1, 0, 1, 0); //Ordonnée
 	drawCurve();
 	if (bascule)
 	{
@@ -123,9 +130,75 @@ void myDraw(void)
 		//bar(-0.5F,-0.5F,0.5F,0.5F);  
 	}
 	setcolor(0.7F,0.8F,1.0F);
-	outtextxy((-(abs(xMin)*pasCalcule)+pasCalcule),pasCalcule,"Fonction sinus");  
+	//outtextxy((-(abs(xMin)*pasCalcule)+pasCalcule),pasCalcule,"Fonction sinus");  
 }
 
+// Restaure la valeur par défaut des bornes si l'utilisateur rentre des valeurs incorrectes.
+void resetBornes(void)
+{
+	xMin = 0;
+	xMax = 1;
+	yMin = -1;
+	yMax = 1;
+}
+
+/**
+* Fonction gérant les tests des données rentrées par l'utilisateur concernant les bornes
+*
+* @param input : chaine saisie par l'utilisateur
+* @return bool
+*/
+bool checkInput(char* input, int* borne)
+{
+	int length, i;
+	length = strlen(input);
+	for (i = 0; i < length; i++)
+	{
+		if (!isdigit(input[i])&& input[i] != '-')
+		{
+			printf("Veuillez saisir une valeur numerique.\n");
+			resetBornes();
+			return false;
+		}
+	}
+	*borne = atoi(input);
+	return true;
+}
+
+// Fonction permettant le scan des valeurs des bornes et la gestion des erreurs éventuelles.
+void scanBornes(void)
+{
+	char tmp[MAXINPUT] = "";
+
+	printf("Entrez la borne X minimale : ");
+	scanf("%s", &tmp);
+	if (!checkInput(tmp, &xMin)) scanBornes();
+
+	printf("Entrez la borne X maximale : ");
+	scanf("%s", &tmp);
+	if (!checkInput(tmp, &xMax)) scanBornes();
+
+	printf("Entrez la borne Y minimale : ");
+	scanf("%s", &tmp);
+	if (!checkInput(tmp, &yMin)) scanBornes();
+
+	printf("Entrez la borne Y maximale : ");
+	scanf("%s", &tmp);
+	if (!checkInput(tmp, &yMax)) scanBornes();
+
+	if (xMin > xMax || yMin > yMax)
+	{
+		printf("Bornes incorrectes. Les bornes minimum doivent etre strictement superieures aux bornes maximum.\n");
+		resetBornes();
+		scanBornes();
+	}
+	else if (xMax == xMin || yMax == yMin)
+	{
+		printf("Bornes incorrectes. Les bornes minimum et maximum ne peuvent etre egales.\n");
+		resetBornes();
+		scanBornes();
+	}
+}
 
 /**
 * main
@@ -142,10 +215,8 @@ void myDraw(void)
 */
 int main(int ac, char *av[])
 {
-	printf("Entrez la borne minimale : ");
-	scanf("%d", &xMin);
-	printf("Entrez la borne minimale : ");
-	scanf("%d", &xMax);
+	// J'ai sorti le scan du main !
+	scanBornes();
 
 	pasCalcule = ((2.0)/(abs(xMax-xMin)));
 
